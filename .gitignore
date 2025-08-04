@@ -1,0 +1,12 @@
+# Build folders
+bin/
+obj/
+
+# Visual Studio config
+.vs/
+*.user
+*.suo
+*.vsidx
+
+# Outros temporários
+launchSettings.json
