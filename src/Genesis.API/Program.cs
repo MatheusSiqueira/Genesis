@@ -1,38 +1,31 @@
-﻿using Genesis.Application.Features.Pacientes.Handlers;
-using Genesis.Domain.Repositories;
-using Genesis.Infrastructure.Persistence;
-using Genesis.Infrastructure.Persistence.Repositories;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Genesis.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services
+// Controllers
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<GenesisDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Swagger
+builder.Services.AddSwaggerConfiguration();
 
-builder.Services.AddMediatR(typeof(CreatePacienteHandler).Assembly);
-builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
+// JWT
+builder.Services.AddJwtConfiguration(builder.Configuration);
 
-// Run app
+// Injeção de dependências do projeto
+builder.Services.AddProjectServices(builder.Configuration);
+
 var app = builder.Build();
 
-// Ativar Swagger em dev
+// Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(); // ✅ isso exibe a UI
+    app.UseSwaggerUI();
 }
 
-app.UseSwagger();
-app.UseSwaggerUI();
-
+// Pipeline
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();

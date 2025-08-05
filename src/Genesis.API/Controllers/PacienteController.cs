@@ -2,6 +2,7 @@
 using Genesis.Application.Features.Pacientes.Queries;
 using Genesis.Shared.DTOs.Paciente;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Genesis.API.Controllers;
@@ -17,6 +18,7 @@ public class PacienteController : ControllerBase
         _mediator = mediator;
     }
 
+    [Authorize(Roles = "Admin,Medico")]
     [HttpPost]
     public async Task<IActionResult> CreatePaciente([FromBody] CreatePacienteDto dto)
     {
@@ -24,6 +26,7 @@ public class PacienteController : ControllerBase
         return CreatedAtAction(nameof(GetPacienteById), new { id }, null);
     }
 
+    [Authorize(Roles = "Admin,Medico")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetPacienteById(Guid id)
     {
@@ -31,6 +34,7 @@ public class PacienteController : ControllerBase
         return paciente is null ? NotFound() : Ok(paciente);
     }
 
+    [Authorize(Roles = "Admin,Medico")]
     [HttpGet]
     public async Task<IActionResult> GetAllPacientes()
     {
@@ -38,6 +42,7 @@ public class PacienteController : ControllerBase
         return Ok(pacientes);
     }
 
+    [Authorize(Roles = "Admin,Medico")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePaciente(Guid id)
     {
