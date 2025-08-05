@@ -30,4 +30,19 @@ public class PacienteController : ControllerBase
         var paciente = await _mediator.Send(new GetPacienteByIdQuery(id));
         return paciente is null ? NotFound() : Ok(paciente);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllPacientes()
+    {
+        var pacientes = await _mediator.Send(new GetAllPacientesQuery());
+        return Ok(pacientes);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeletePaciente(Guid id)
+    {
+        var result = await _mediator.Send(new DeletePacienteCommand(id));
+        return result ? NoContent() : NotFound();
+    }
+
 }
