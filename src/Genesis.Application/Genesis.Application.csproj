@@ -1,12 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <Compile Remove="Features\NewFolder\**" />
-    <EmbeddedResource Remove="Features\NewFolder\**" />
-    <None Remove="Features\NewFolder\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Genesis.Domain\Genesis.Domain.csproj" />
     <ProjectReference Include="..\Genesis.Infrastructure\Genesis.Infrastructure.csproj" />
     <ProjectReference Include="..\Genesis.Shared\Genesis.Shared.csproj" />

@@ -9,7 +9,9 @@ public class GenesisDbContext : DbContext
         : base(options) { }
 
     public DbSet<Paciente> Pacientes => Set<Paciente>();
+    public DbSet<Medico> Medicos => Set<Medico>();
     public DbSet<User> Users => Set<User>();
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
