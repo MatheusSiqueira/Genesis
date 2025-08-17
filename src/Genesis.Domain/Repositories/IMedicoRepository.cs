@@ -9,4 +9,5 @@ public interface IMedicoRepository
     Task<Guid> AddAsync(Medico medico, CancellationToken cancellationToken);
     Task<bool> UpdateAsync(Medico medico, CancellationToken cancellationToken);
     Task<bool> DeleteAsync(Medico medico, CancellationToken cancellationToken);
+    Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken);
 }

@@ -1,5 +1,6 @@
 ﻿using Genesis.Application.Features.Pacientes.Handlers;
 using Genesis.Domain.Repositories;
+using Genesis.Infrastructure.Identity;
 using Genesis.Infrastructure.Persistence;
 using Genesis.Infrastructure.Persistence.Repositories;
 using Genesis.Infrastructure.Services;
@@ -26,6 +27,9 @@ public static class DependencyInjection
 
         // Services
         services.AddScoped<JwtService>();
+
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
 
         return services;
     }

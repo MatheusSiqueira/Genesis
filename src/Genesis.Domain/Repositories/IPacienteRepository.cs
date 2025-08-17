@@ -9,4 +9,5 @@ public interface IPacienteRepository
     Task<List<Paciente>> GetAllAsync(CancellationToken cancellationToken);
     Task<bool> UpdateAsync(Paciente paciente, CancellationToken cancellationToken);
     Task<bool> DeleteAsync(Paciente paciente, CancellationToken cancellationToken);
+    Task<bool> ExistsAsync(Guid id, CancellationToken ct);
 }

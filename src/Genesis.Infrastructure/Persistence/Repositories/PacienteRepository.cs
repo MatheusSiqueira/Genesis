@@ -42,6 +42,6 @@ public class PacienteRepository : IPacienteRepository
         await _context.SaveChangesAsync(cancellationToken);
         return true;
     }
-
-
+    public Task<bool> ExistsAsync(Guid id, CancellationToken ct)
+        => _context.Pacientes.AnyAsync(p => p.Id == id, ct);
 }

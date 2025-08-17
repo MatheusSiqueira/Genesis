@@ -1,6 +1,5 @@
 ﻿using Genesis.Domain.Entities;
 using Genesis.Domain.Repositories;
-using Genesis.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Genesis.Infrastructure.Persistence.Repositories;
@@ -44,4 +43,7 @@ public class MedicoRepository : IMedicoRepository
         await _context.SaveChangesAsync(cancellationToken);
         return true;
     }
+
+    public Task<bool> ExistsAsync(Guid id, CancellationToken ct)
+        => _context.Pacientes.AnyAsync(p => p.Id == id, ct);
 }

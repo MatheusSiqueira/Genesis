@@ -11,6 +11,9 @@ builder.Services.AddSwaggerConfiguration();
 // JWT
 builder.Services.AddJwtConfiguration(builder.Configuration);
 
+// CORS
+builder.Services.AddCorsConfiguration();
+
 // Injeção de dependências do projeto
 builder.Services.AddProjectServices(builder.Configuration);
 
@@ -25,7 +28,10 @@ if (app.Environment.IsDevelopment())
 
 // Pipeline
 app.UseHttpsRedirection();
+app.UseCors(); // ⚠️ Importante: deve vir antes do Authentication
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseMiddleware<ErrorHandlingMiddleware>();
+
 app.Run();

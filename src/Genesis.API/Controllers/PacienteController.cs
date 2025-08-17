@@ -1,5 +1,7 @@
-﻿using Genesis.Application.Features.Pacientes.Commands;
+﻿using Genesis.Application.Features.Medico.Commands;
+using Genesis.Application.Features.Pacientes.Commands;
 using Genesis.Application.Features.Pacientes.Queries;
+using Genesis.Shared.DTOs.Medico;
 using Genesis.Shared.DTOs.Paciente;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +26,14 @@ public class PacienteController : ControllerBase
     {
         var id = await _mediator.Send(new CreatePacienteCommand(dto));
         return CreatedAtAction(nameof(GetPacienteById), new { id }, null);
+    }
+
+    [HttpPut("{id}")]
+    [Authorize(Roles = "Admin,Medico")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdatePacienteDto dto)
+    {
+        var result = await _mediator.Send(new UpdatePacienteCommand(id, dto));
+        return result ? NoContent() : NotFound();
     }
 
     [Authorize(Roles = "Admin,Medico")]
