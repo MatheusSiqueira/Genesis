@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Genesis.API.Extensions
 {
@@ -15,16 +16,18 @@ namespace Genesis.API.Extensions
                     policy
                         .WithOrigins(
                             "http://localhost:5173",        // DEV (Vite)
-                            "https://lab-genesis.online",   // PROD (Front)
-                            "https://www.lab-genesis.online"// (se usar www)
+                            "https://lab-genesis.online",   // PROD (front)
+                            "https://www.lab-genesis.online"// se usar www
                         )
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                    // .AllowCredentials(); // só se usar COOKIE; com JWT no header, deixe SEM
+                        .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                        .WithHeaders("Content-Type", "Authorization", "X-Requested-With")
+                        .SetPreflightMaxAge(TimeSpan.FromHours(1))
+                        // .AllowCredentials(); // só se autenticar por COOKIE; com JWT via header, deixe sem
+                        ;
                 });
             });
 
             return services;
         }
     }
-}
+} 
