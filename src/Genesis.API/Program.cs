@@ -14,12 +14,12 @@ builder.Services.AddJwtConfiguration(builder.Configuration);
 // CORS
 builder.Services.AddCorsConfiguration();
 
-// Injeção de dependências do projeto
+// DI do projeto
 builder.Services.AddProjectServices(builder.Configuration);
 
 var app = builder.Build();
 
-// Swagger
+// Swagger (só em dev; se quiser em prod, mova para fora do if)
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -28,10 +28,15 @@ if (app.Environment.IsDevelopment())
 
 // Pipeline
 app.UseHttpsRedirection();
-app.UseCors(); // ⚠️ Importante: deve vir antes do Authentication
+
+// ⚠️ CORS deve vir ANTES de Auth/Authorization
+app.UseCors(CorsConfiguration.PolicyName);
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
+
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.Run();
