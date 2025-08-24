@@ -1,6 +1,8 @@
 ﻿using Genesis.Application.Features.Medico.Commands;
 using Genesis.Application.Features.Pacientes.Commands;
 using Genesis.Application.Features.Pacientes.Queries;
+using Genesis.Application.Pacientes.Queries;
+using Genesis.Shared.DTOs.Common;
 using Genesis.Shared.DTOs.Medico;
 using Genesis.Shared.DTOs.Paciente;
 using MediatR;
@@ -45,19 +47,22 @@ public class PacienteController : ControllerBase
     }
 
     [Authorize(Roles = "Admin,Medico")]
-    [HttpGet]
-    public async Task<IActionResult> GetAllPacientes()
-    {
-        var pacientes = await _mediator.Send(new GetAllPacientesQuery());
-        return Ok(pacientes);
-    }
-
-    [Authorize(Roles = "Admin,Medico")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePaciente(Guid id)
     {
         var result = await _mediator.Send(new DeletePacienteCommand(id));
         return result ? NoContent() : NotFound();
+    }
+
+    [Authorize(Roles = "Admin,Medico")]
+    [HttpGet]
+    public async Task<ActionResult<PagedResult<PacienteDto>>> Get(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? q = null)
+    {
+        var result = await _mediator.Send(new GetPacientesQuery(page, pageSize, q));
+        return Ok(result);
     }
 
 }

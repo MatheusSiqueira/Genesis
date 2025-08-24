@@ -1,4 +1,6 @@
 ﻿using Genesis.API.Extensions;
+using Genesis.Application.Pacientes.Queries;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,8 @@ builder.Services.AddJwtConfiguration(builder.Configuration);
 
 // DI do projeto
 builder.Services.AddProjectServices(builder.Configuration);
+
+builder.Services.AddMediatR(typeof(GetPacientesQuery).Assembly);
 
 var app = builder.Build();
 
